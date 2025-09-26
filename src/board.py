@@ -1,3 +1,6 @@
+from src.battleships import Ship
+
+
 class Board:
     def __init__(self):
         # Board is always 10x10
@@ -8,6 +11,7 @@ class Board:
         self.columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
         # The grid itself: a 2D list of dots ('.') for empty cells
         self.grid = [['.' for i in range(self.size)] for i in range(self.size)]
+        self.ships = []
 
     def render(self):
         # Print header row with column letters
@@ -49,6 +53,29 @@ class Board:
         self.grid[row][col] = value
         return
 
+    def place_ship(self, ship, start_coord, orientation):
+        row, col = self.to_index(start_coord)
+        new_positions = []
+        for i in range(0, ship.length):
+            if orientation == 'horizontal':
+                row_index, col_index = (row, col + i)
+            elif orientation == 'vertical':
+                row_index, col_index = (row + i, col)
+            if not (0 <= row_index < self.size and 0 <= col_index < self.size):
+                return False
+            converted_positions = self.columns[col_index] + self.rows[row_index]
+            new_positions.append(converted_positions)
+        for position in new_positions:
+            if not self.in_bounds(position):
+                return False
+        for position in new_positions:
+            if not self.get(position) == '.':
+                return False
+        for position in new_positions:
+            self.set(position, 'S')
+        ship.positions = new_positions
+        self.ships.append(ship)
+        return True
 
 
 
