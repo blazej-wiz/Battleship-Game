@@ -16,8 +16,30 @@ class Board:
             row_number += 1
         return
 
+    def in_bounds(self, coord):
+        valid = True
+        letter_part = coord[0]
+        number_part = coord[1:]
+        if (letter_part not in self.columns) or (number_part not in self.rows):
+            valid = False
+        return valid
+
+
+
+
 board = Board()
-board.render()
+
+board.in_bounds('C4')
+
+
+
+
+
+
+
+
+
+
 
 
 
