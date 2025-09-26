@@ -32,12 +32,23 @@ class Board:
 
         return (row_index, col_index)
 
+    def get(self, coord: str):
+        row, col = self.to_index(coord)
+        return self.grid[row][col]
+
+    def set(self, coord: str, value: str):
+        row, col = self.to_index(coord)
+        self.grid[row][col] = value
+
+
+    # def set(self, coord: str, value: str):
+
 
 
 
 board = Board()
 
-board.to_index('C4')
+board.get('C4')
 
 
 
