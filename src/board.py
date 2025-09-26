@@ -24,12 +24,20 @@ class Board:
             valid = False
         return valid
 
+    def to_index(self, coord):
+        letter_part = coord[0]
+        number_part = coord[1:]
+        col_index = self.columns.index(letter_part)
+        row_index = self.rows.index(number_part)
+
+        return (row_index, col_index)
+
 
 
 
 board = Board()
 
-board.in_bounds('C4')
+board.to_index('C4')
 
 
 
