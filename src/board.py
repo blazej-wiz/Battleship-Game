@@ -77,6 +77,26 @@ class Board:
         self.ships.append(ship)
         return True
 
+    def fire_at(self, coord):
+        if not self.in_bounds(coord):
+            return 'Invalid'
+        if self.get(coord) == 'X' or self.get(coord) == 'O':
+            return 'Already Tried'
+        elif self.get(coord) == '.' or self.get(coord) == 'S':
+            for ship in self.ships:
+                if ship.occupies(coord):
+                    self.set(coord, 'X')
+                    ship.register_hit(coord)
+                    if ship.is_sunk() == True:
+                        return 'Sunk {name}'.format(name = ship.name)
+                    else:
+                        return 'Hit'
+            self.set(coord, 'O')
+            return 'Miss'
+
+
+
+
 
 
 
