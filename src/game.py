@@ -3,15 +3,24 @@ from src.battleships import Ship
 
 class Game:
     def __init__(self, player1_name, player2_name, fleet1, fleet2):
+        # Initialize players
         self.player1_name = player1_name
         self.player2_name = player2_name
+
+        # Each player gets their own board
         self.board_p1 = Board()
         self.board_p2 = Board()
+
+        # Each player starts with a copy of their fleet (list of ships to place)
         self.fleet1 = fleet1
         self.fleet2 = fleet2
+
+        # Track whose turn it is (1 = Player 1, 2 = Player 2)
         self.current_player = 1
 
     def place_ship(self, player, ship_name, length, coord, orientation):
+        # Place a ship on the given players board at the specified coordinate
+        # and Removes the ship from the players fleet if placed successfully
         ship = Ship(ship_name, length)
         if player == 1:
             success = self.board_p1.place_ship(ship, coord, orientation)
@@ -26,6 +35,8 @@ class Game:
         return False
 
     def place_fleet(self, player):
+        # Check if a players fleet has been completely placed
+        # Returns True if no ships left to place
         if player == 1:
             return len(self.fleet1) == 0
         elif player == 2:
@@ -33,6 +44,8 @@ class Game:
         return False
 
     def fire(self, player, coord):
+        # Handle firing at the opponents board
+        # Returns the result string ('Hit', 'Miss', 'Sunk' etc)
         if player == 1:
             return self.board_p2.fire_at(coord)
         elif player == 2:
@@ -40,6 +53,7 @@ class Game:
         return 'Invalid player'
 
     def get_board(self, player):
+        # Return the grid of the specified players board for display in GUI
         if player == 1:
             return self.board_p1.get_grid()
         elif player == 2:
@@ -47,12 +61,20 @@ class Game:
         return None
 
     def is_game_over(self):
+        # Check if all ship of a player are sunk
+        # Returns
+        # 0 = Games still going
+        # 1 = Player 1 wins
+        # 2 = Player 2 wins
+
+        # Check player 1 ships
         all_sunk_p1 = True
         for ship in self.board_p1.ships:
             if not ship.is_sunk():
                 all_sunk_p1 = False
                 break
 
+        # Check player 2 ships
         all_sunk_p2 = True
         for ship in self.board_p2.ships:
             if not ship.is_sunk():
@@ -66,11 +88,8 @@ class Game:
         return 0
 
 
-
-
-
-
     def switch_turn(self):
+        # Switch the current player
         self.current_player = 2 if self.current_player == 1 else 1
 
 
